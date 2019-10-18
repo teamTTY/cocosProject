@@ -24,7 +24,7 @@ void AnimCtl::AddSprite(cocos2d::Animation* anim, std::string filename)
 cocos2d::Action* AnimCtl::GetAct()
 {	
 	cocos2d::Animation* ani = cocos2d::AnimationCache::getInstance()->getAnimation(animName[static_cast<int>(animSt)]);
-	ani->setDelayPerUnit(0.1f);
+	ani->setDelayPerUnit(0.08f);
 	ani->setRestoreOriginalFrame(true);
 	cocos2d::Action* act = cocos2d::RepeatForever::create(cocos2d::Animate::create(ani));
 	action = act;
@@ -64,7 +64,7 @@ void AnimCtl::InitAnim(cocos2d::Node* nd)
 				AddSprite(animInfo[animCnt], "player-" + name + "-" + std::to_string(num) + ".png");
 			}
 		}
-		animInfo[animCnt]->setDelayPerUnit(0.1f);
+		animInfo[animCnt]->setDelayPerUnit(0.08f);
 		animInfo[animCnt]->setRestoreOriginalFrame(true);
 		cocos2d::AnimationCache::getInstance()->addAnimation(animInfo[animCnt], name);
 		animCnt++;

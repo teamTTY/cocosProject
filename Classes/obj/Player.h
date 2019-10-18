@@ -13,12 +13,14 @@ public:
 	Player();
 	~Player();
 
-	void update(float frame);
+	void update(float frame);				//毎フレーム更新関数（引数：float単位のフレーム数）
+	bool PLCollision(cocos2d::Vec2 pos, cocos2d::TMXTiledMap* map, cocos2d::TMXLayer* lay);//頂点を判定して当たっていたらtrueを返す
 	CREATE_FUNC(Player);
 
 private:
 	std::unique_ptr<OPRT_State> oprt_state;
 	input_data data;
-	bool reverseFlag;
+	bool reverseFlag;						//画像を左右反転させるかフラグ（true反転、falseなし）
+	cocos2d::Vec2 speed;					//プレイヤーの移動スピード
 };
 
