@@ -48,6 +48,8 @@ void Player::update(float frame)
 	//取得したTMXTiledMapの情報内のTMXLayer型のレイヤー情報を取得
 	auto lay = (cocos2d::TMXLayer*)map->getLayer("ground");
 
+
+	
 	//move processing
 	if (data.button[static_cast<int>(ST::NOW)])
 	{
@@ -64,7 +66,7 @@ void Player::update(float frame)
 			lpAnimCtl.SetAnimSt(this, ANIM_ST::RUN);
 			reverseFlag = false;
 		}
-		else if (data.dir == DIR::UP)
+		if (data.dir == DIR::UP)
 		{
 			tmpPos.y += speed.y;
 			lpAnimCtl.SetAnimSt(this, ANIM_ST::JUMP);
@@ -76,7 +78,7 @@ void Player::update(float frame)
 			lpAnimCtl.SetAnimSt(this, ANIM_ST::RUN_SHOT);
 			reverseFlag = false;
 		}
-
+		
 		if (!PLCollision(tmpPos, map, lay))
 		{
 			//障害物に当たってなかったら移動する
@@ -110,23 +112,34 @@ bool Player::PLCollision(cocos2d::Vec2 pos, cocos2d::TMXTiledMap* map, cocos2d::
 	//autoで回すための当たり判定の頂点座標配列
 	cocos2d::Vec2 rect[4] = { leftUp, rightUp, leftDown, rightDown };
 
+	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+
 	//4頂点を判定し当たっていたらtrueを返す
 	for (auto plPos : rect)
 	{
+		//画面の範囲外まで移動していたら進まないようにする
+		if (plPos.x < 0 || plPos.x > visibleSize.width || plPos.y < -map->getTileSize().height - 1 || plPos.y > visibleSize.height)
+		{
+			return true;
+		}
 		//現在の座標をマス目単位になおす
 		float tileX = plPos.x / map->getTileSize().width;
 		float tileY = (map->getMapSize().height - 1) - (plPos.y / map->getTileSize().height);
-		int tip = (tileX + (tileY * map->getMapSize().width));
 		//引数で指定したマス目のところに何か置かれているかを見る
 		int tile = lay->getTileGIDAt(cocos2d::ccp((int)tileX, (int)tileY));
+
+		/*auto objGroup = map->getObjectGroup("obj")->getObjects();
+		auto obj = objGroup.begin()->asValueMap();*/
+
+
 		//何か情報が入っていればtrueを返す
 		if (tile)
 		{
-			if (map->getPropertiesForGID(tip).asInt() == 1)
+			auto properties = map->getPropertiesForGID(tile).asValueMap();
+			if (properties.at("col").asInt() == 1)
 			{
-				int a = 0;
+				return true;
 			}
-			return true;
 		}
 	}
 	return false;

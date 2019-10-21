@@ -21,7 +21,7 @@ void OPRT_Key::Update(cocos2d::Node * sp)
 		{
 			data.dir = DIR::LEFT;
 		}
-		if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
+		else if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
 		{
 			data.dir = DIR::RIGHT;
 		}
@@ -29,7 +29,7 @@ void OPRT_Key::Update(cocos2d::Node * sp)
 		{
 			data.dir = DIR::UP;
 		}
-		if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW)
+		else if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW)
 		{
 			data.dir = DIR::DOWN;
 		}

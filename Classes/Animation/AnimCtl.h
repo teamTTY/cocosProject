@@ -44,6 +44,7 @@ private:
 	{
 		void operator()(AnimCtl* animCtl) const
 		{
+			//ŒÄ‚Î‚ê‚½‚çAnimCtlƒV[ƒ“‚ğ”jŠü‚·‚é
 			delete animCtl;
 		}
 	};

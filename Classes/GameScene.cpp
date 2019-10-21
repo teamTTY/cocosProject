@@ -25,6 +25,7 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "obj/Player.h"
+#include "obj/Enemy.h"
 #include "_DebugConOut.h"
 
 
@@ -148,6 +149,16 @@ bool GameScene::init()
 	else
 	{
 		plLayer->addChild(player, PLAYER);
+	}
+
+	auto enemy = Enemy::createPlayer();
+	if (enemy == nullptr)
+	{
+		log("enemy‚ªnullptr‚Å‚µ‚½B");
+	}
+	else
+	{
+		plLayer->addChild(enemy, PLAYER);
 	}
 
 	this->scheduleUpdate();
