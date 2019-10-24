@@ -39,7 +39,10 @@ struct OPRT_State
 
 	virtual TYPE GetType() = 0;
 	virtual void Update(cocos2d::Node* sp) = 0;
-	input_data GetData();
+	input_data GetData()
+	{
+		return data;
+	}
 
 protected:
 	input_data data;	//入力データ保存用

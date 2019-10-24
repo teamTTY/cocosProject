@@ -26,7 +26,8 @@
 #include "SimpleAudioEngine.h"
 #include "obj/Player.h"
 #include "obj/Enemy.h"
-#include "_DebugConOut.h"
+#include "debug/_DebugConOut.h"
+#include "debug/_DebugDispOut.h"
 
 
 USING_NS_CC;
@@ -48,6 +49,7 @@ bool GameScene::init()
 {
 #if (_DEBUG &&CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	_DebugConOut::GetInstance();
+	_DebugDispOut::GetInstance();
 #else
 #endif
 	
@@ -112,7 +114,7 @@ bool GameScene::init()
         this->addChild(label, LABEL);
     }
 
-	//Layer
+	//レイヤー作成（bgBackLayer、bgFrontLayer, plLayer）
 	auto bgBackLayer = Layer::create();
 	bgBackLayer->setName("BG_BACKGROUND");
 	this->addChild(bgBackLayer, BG_BACK);
@@ -125,12 +127,16 @@ bool GameScene::init()
 	plLayer->setName("BG_BACKGROUND");
 	this->addChild(plLayer, PLAYER);
 
-	//BackGround
-	auto background = Sprite::create("image/Environment/middleground.png");
-	background->setPosition(816 / 2, visibleSize.height / 2);
+	auto debugLayer = Layer::create();
+	debugLayer->setName("DEBUG_LAYER");
+	this->addChild(debugLayer, DEBUG);
+
+	//背景追加
+	auto background = Sprite::create("image/Environment/background.png");
+	background->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bgBackLayer->addChild(background, BG_BACK);
-	auto background2 = Sprite::create("image/Environment/middleground.png");
-	background2->setPosition(816 + 816 / 2, visibleSize.height / 2);
+	auto background2 = Sprite::create("image/Environment/background.png");
+	background2->setAnchorPoint(cocos2d::Vec2(-1, 0));
 	bgBackLayer->addChild(background2, BG_BACK);
 
 	auto tilemap = TMXTiledMap::create("image/Environment/test.tmx");
@@ -139,19 +145,8 @@ bool GameScene::init()
 	layer->setGlobalZOrder(BG_FRONT);
 	bgBackLayer->addChild(tilemap, BG_BACK);
 
-
-	//Player
-	auto player = Player::createPlayer();
-	if (player == nullptr)
-	{
-		log("playerがnullptrでした。");
-	}
-	else
-	{
-		plLayer->addChild(player, PLAYER);
-	}
-
-	auto enemy = Enemy::createPlayer();
+	//Enemy追加
+	auto enemy = Enemy::createEnemy();
 	if (enemy == nullptr)
 	{
 		log("enemyがnullptrでした。");
@@ -161,12 +156,17 @@ bool GameScene::init()
 		plLayer->addChild(enemy, PLAYER);
 	}
 
-	this->scheduleUpdate();
+	//Player追加
+	auto player = Player::createPlayer();
+	if (player == nullptr)
+	{
+		log("playerがnullptrでした。");
+	}
+	else
+	{
+		plLayer->addChild(player, PLAYER);
+	}
     return true;
-}
-
-void GameScene::update(float frame)
-{
 }
 
 void GameScene::menuCloseCallback(Ref* pSender)
@@ -178,7 +178,5 @@ void GameScene::menuCloseCallback(Ref* pSender)
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
 

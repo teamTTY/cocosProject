@@ -13,42 +13,10 @@ AnimCtl::~AnimCtl()
 void AnimCtl::Init(cocos2d::Node* nd)
 {
 	animSt = ANIM_ST::IDLE;
-	InitAnim(nd);
-}
+	animSpeed = 0.08f;
 
-void AnimCtl::AddSprite(cocos2d::Animation* anim, std::string filename)
-{
-	anim->addSpriteFrame(cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(filename));
-}
-
-cocos2d::Action* AnimCtl::GetAct()
-{	
-	cocos2d::Animation* ani = cocos2d::AnimationCache::getInstance()->getAnimation(animName[static_cast<int>(animSt)]);
-	ani->setDelayPerUnit(0.08f);
-	ani->setRestoreOriginalFrame(true);
-	cocos2d::Action* act = cocos2d::RepeatForever::create(cocos2d::Animate::create(ani));
-	action = act;
-	return act;
-}
-
-ANIM_ST AnimCtl::GetAnimSt()
-{
-	return animSt;
-}
-
-void AnimCtl::SetAnimSt(cocos2d::Node* nd, ANIM_ST anim)
-{	
-	if (animSt != anim)
-	{
-		nd->stopAction(action);
-		animSt = anim;
-	}
-}
-
-void AnimCtl::InitAnim(cocos2d::Node* nd)
-{
-	int animCnt = 0;
-
+	int animCnt = 0;	//enum‚É‘Î‰ž‚³‚¹‚é‚½‚ß
+	
 	for (auto name : animName)
 	{
 		cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("image/Sprites/player/player-" + name + "/sprites.plist");
@@ -64,11 +32,39 @@ void AnimCtl::InitAnim(cocos2d::Node* nd)
 				AddSprite(animInfo[animCnt], "player-" + name + "-" + std::to_string(num) + ".png");
 			}
 		}
-		animInfo[animCnt]->setDelayPerUnit(0.08f);
+		animInfo[animCnt]->setDelayPerUnit(animSpeed);
 		animInfo[animCnt]->setRestoreOriginalFrame(true);
 		cocos2d::AnimationCache::getInstance()->addAnimation(animInfo[animCnt], name);
 		animCnt++;
 	}
 
-	nd = cocos2d::Sprite::createWithSpriteFrameName("player-idle-1.png");
+	//nd = cocos2d::Sprite::createWithSpriteFrameName("player-idle-1.png");
+}
+
+void AnimCtl::AddSprite(cocos2d::Animation* anim, std::string filename)
+{
+	anim->addSpriteFrame(cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(filename));
+}
+
+cocos2d::Action* AnimCtl::GetAct()
+{	
+	cocos2d::Animation* ani = cocos2d::AnimationCache::getInstance()->getAnimation(animName[static_cast<int>(animSt)]);
+	ani->setDelayPerUnit(animSpeed);
+	ani->setRestoreOriginalFrame(true);
+	action = cocos2d::RepeatForever::create(cocos2d::Animate::create(ani));
+	return action;
+}
+
+ANIM_ST AnimCtl::GetAnimSt()
+{
+	return animSt;
+}
+
+void AnimCtl::SetAnimSt(cocos2d::Node* nd, ANIM_ST anim)
+{	
+	if (animSt != anim)
+	{
+		nd->stopAction(action);
+		animSt = anim;
+	}
 }

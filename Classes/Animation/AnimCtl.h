@@ -37,7 +37,6 @@ public:
 	cocos2d::Action* GetAct();										//アニメーション情報を取得できる　（返り値：アニメーション情報が入っている場所へのポインター）
 	ANIM_ST GetAnimSt();											//現在のアニメーションが何かを返す（返り値：enumclassのANIM_ST型）
 	void SetAnimSt(cocos2d::Node* nd, ANIM_ST anim);				//変えたいアニメーションを設定する（引数：Nodeクラスを継承しているクラスのポインター、変えたいアニメーションのenumclassのANIM_ST型）
-	void InitAnim(cocos2d::Node* nd);								//最初のInit時に１回のみアニメーションの情報を設定する（引数：Nodeクラスを継承しているクラスのポインター）
 
 private:
 	struct AnimCtlDeleter	//unique_ptr用の自作デストラクター
@@ -52,10 +51,11 @@ private:
 	~AnimCtl();
 	static std::unique_ptr<AnimCtl, AnimCtlDeleter> s_instance;
 
-	ANIM_ST animSt;			//現在アニメーションの種類を保持する
+	ANIM_ST animSt;			//現在のアニメーションの種類を保持する
 	AnimInfo animInfo;		//アニメーション情報、アニメーションの種類を保持する
 	cocos2d::Sprite* sprite;//スプライト情報を入れる
 	cocos2d::Action* action;//アニメーション情報を入れる
+	float animSpeed;		//アニメーションスピード
 	//全アニメーションのフレーム数を格納
 	int animFrameNum[static_cast<int>(ANIM_ST::MAX)] = {2, 4, 6, 10, 10, 3, 1, 1, 1};
 	//全アニメーションの名前を格納

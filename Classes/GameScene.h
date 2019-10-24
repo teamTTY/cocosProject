@@ -27,7 +27,8 @@
 
 #include "cocos2d.h"
 
-//zOrderの番号を動的に変える際に順番が分からなくならないようにする
+//zOrderの番号を動的に変える際に順番が分からなくならないようにするために
+//enumで順番を作っておき、それで指定する
 enum SceneZoder
 {
 	BG_BACK,
@@ -35,6 +36,7 @@ enum SceneZoder
 	BG_FRONT,
 	LABEL,
 	MENU,
+	DEBUG
 };
 
 class Player;
@@ -44,14 +46,11 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-	void update(float frame);
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
-
-private:
 };
 
 #endif // __HELLOWORLD_SCENE_H__

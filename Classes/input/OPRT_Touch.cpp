@@ -26,24 +26,24 @@ void OPRT_Touch::Update(cocos2d::Node * sp)
 		return true;
 	};
 	listener->onTouchMoved = [this](cocos2d::Touch* touch, cocos2d::Event* event) {
-	    loc = touch->getLocation();
-	    if(loc.x < centerPos.x - offset) {
-			data.dir = DIR::LEFT;
-		}
-		else if(loc.x > centerPos.x + offset) {
-			data.dir = DIR::RIGHT;
-		}
-		else if(loc.y < centerPos.y - offset) {
-			data.dir = DIR::DOWN;
-		}
-		else if(loc.y > centerPos.y + offset) {
-			data.dir = DIR::UP;
-		}
+								loc = touch->getLocation();
+								if(loc.x < centerPos.x - offset) {
+									data.dir = DIR::LEFT;
+								}
+								else if(loc.x > centerPos.x + offset) {
+									data.dir = DIR::RIGHT;
+								}
+								else if(loc.y < centerPos.y - offset) {
+									data.dir = DIR::DOWN;
+								}
+								else if(loc.y > centerPos.y + offset) {
+									data.dir = DIR::UP;
+								}
 	};
 	listener->onTouchEnded = [this](cocos2d::Touch* touch, cocos2d::Event* event) {
-		data.button[static_cast<int>(ST::OLD)] = data.button[static_cast<int>(ST::NOW)];
-		data.button[static_cast<int>(ST::NOW)] = 0;
-        data.dir = DIR::MAX;
+								data.button[static_cast<int>(ST::OLD)] = data.button[static_cast<int>(ST::NOW)];
+								data.button[static_cast<int>(ST::NOW)] = 0;
+								data.dir = DIR::MAX;
 	};
 
 	if (onceFlag)
