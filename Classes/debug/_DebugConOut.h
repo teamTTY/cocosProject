@@ -3,7 +3,7 @@
 
 #if (_DEBUG && (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32))
 #include <windows.h>
-//引数の文字をコンソールに表示する
+//引数の文字をコンソールに出力する
 #define TRACE(fmt, ...) printf(fmt, __VA_ARGS__)//...が任意の連結した文字列(可変引数)、_がばらしてくれる。
 //デバッグメッセージを表示するための定義
 #define AST() {\
